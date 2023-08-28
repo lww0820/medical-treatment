@@ -101,7 +101,7 @@ const login = async () => {
   try {
     useStore.setUser(LoginRes.data)
     console.log(route.query)
-    router.replace((route.query.returnUrl as string) || '/')
+    router.replace((route.query.returnUrl as string) || '/user')
     showToast('登录成功')
   } catch (error) {
     console.log(error)
