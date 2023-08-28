@@ -14,3 +14,4 @@ console.log(history)
 app.use(pinia)
 app.use(router)
 app.mount('#app')
+import './permission'

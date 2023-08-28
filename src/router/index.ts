@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+import { useCounterStore } from '@/stores/user'
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
   routes: [
@@ -16,22 +17,26 @@ const router = createRouter({
         {
           path: 'home',
           name: 'home',
-          component: () => import('../views/Home/index.vue')
+          component: () => import('../views/Home/index.vue'),
+          meta: { title: '首页' }
         },
         {
           path: 'notify',
           name: 'notify',
-          component: () => import('../views/Notify/index.vue')
+          component: () => import('../views/Notify/index.vue'),
+          meta: { title: '消息中心' }
         },
         {
           path: 'article',
           name: 'article',
-          component: () => import('../views/Article/index.vue')
+          component: () => import('../views/Article/index.vue'),
+          meta: { title: '消息百科' }
         },
         {
           path: 'user',
           name: 'user',
-          component: () => import('../views/User/index.vue')
+          component: () => import('../views/User/index.vue'),
+          meta: { title: '个人中心' }
         }
       ]
     },
