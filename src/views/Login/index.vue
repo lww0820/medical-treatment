@@ -5,9 +5,9 @@
 
     <!-- 头部 -->
     <div class="login-header">
-      <h3>密码登录</h3>
-      <p>
-        <a href="JavaScript:;">短信验证码登录</a>
+      <h3>{{ isPass ? '密码登录' : '短信验证码登录' }}</h3>
+      <p @click="isPass = !isPass">
+        <a href="JavaScript:;">{{ isPass ? '短信验证码登录' : '密码登录' }}</a>
         <van-icon name="arrow" />
       </p>
     </div>
@@ -20,9 +20,15 @@
         :rules="passwordRules"
         :type="show ? 'text' : 'password'"
         placeholder="请输入密码"
+        v-if="isPass"
       >
         <template #button>
           <cp-icon @click="show = !show" :name="`login-eye-${show ? 'on' : 'off'}`"></cp-icon>
+        </template>
+      </van-field>
+      <van-field v-else v-model="code" :rules="codeRules" placeholder="请输入验证码">
+        <template #button>
+          <span @click="sendCode">{{ timer > 0 ? timer + 's后再发送' : '发送验证码' }}</span>
         </template>
       </van-field>
       <div class="cp-cell">
@@ -51,26 +57,72 @@
 
 <script lang="ts" setup>
 import cpNavBar from '@/components/cp-nav-bar.vue'
-import router from '@/router'
 import { ref } from 'vue'
 import cpIcon from '@/components/cp-icon.vue'
-import { mobileRules, passwordRules } from '@/utils/rules'
+import { mobileRules, passwordRules, codeRules } from '@/utils/rules'
 import { showToast } from 'vant'
+import { loginByPassword, sendCodeApi, loginByCode } from '@/services/user'
+import { useCounterStore } from '@/stores/user'
+import { useRoute, useRouter } from 'vue-router'
+const route = useRoute()
+const router = useRouter()
 
 const mobile = ref('13230000001')
 const password = ref('abc12345')
+const code = ref('')
+const codeCheck = ref()
 const agree = ref(false)
 const show = ref(false)
+const useStore = useCounterStore()
+
+const timer = ref(0)
+
+const isPass = ref(true)
 
 const handleClickRight = () => {
   router.push('/register')
 }
 
-const login = () => {
+const login = async () => {
   if (!agree.value) {
     showToast('请勾选用户协议')
     return
   }
+  if (!isPass.value) {
+    if (code.value !== codeCheck.value) {
+      showToast('验证码输入错误')
+      return
+    }
+  }
+  const LoginRes = code.value
+    ? await loginByCode(mobile.value, code.value)
+    : await loginByPassword(mobile.value, password.value)
+
+  try {
+    useStore.setUser(LoginRes.data)
+    console.log(route.query)
+    router.replace((route.query.returnUrl as string) || '/')
+    showToast('登录成功')
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+// console.log(LoginRes.data)
+
+// 发送验证码
+const sendCode = async () => {
+  if (timer.value > 0) return
+
+  setInterval(() => {
+    timer.value--
+  }, 1000)
+  let res = await sendCodeApi(mobile.value, 'login')
+  showToast('发送成功')
+
+  // console.log(res)
+  codeCheck.value = res.data.code
+  timer.value = 60
 }
 </script>
 

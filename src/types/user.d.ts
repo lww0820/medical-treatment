@@ -12,3 +12,9 @@ export type User =
       avatar: string
     }
   | undefined
+
+export type codeType = 'login' | 'register' | 'changeMobile' | 'forgetPassword' | 'bindMobile'
+
+export type code = {
+  code: string
+}

@@ -38,7 +38,7 @@ instance.interceptors.response.use(
       const store = useCounterStore()
       store.delUser()
       // 跳转到登录页
-      router.push(`/login?${router.currentRoute.value.fullPath}`)
+      router.push(`/login?returnUrl=${router.currentRoute.value.fullPath}`)
     }
     return Promise.reject(err)
   }
