@@ -1,3 +1,4 @@
+// 引入类型
 import type { User, userInfo } from '@/types/user'
 import type { codeType, code, patientInfo } from '@/types/user'
 import request from '@/utils/request'
@@ -16,6 +17,3 @@ export const loginByCode = (mobile: string, code: string) =>
 
 // 获取用户信息
 export const getUserInfo = () => request<userInfo>('/patient/myUser', 'GET')
-
-// 获取家庭档案
-export const getPatientInfo = () => request<patientInfo[]>('/patient/mylist', 'GET')
