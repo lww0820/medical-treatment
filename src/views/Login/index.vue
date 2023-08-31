@@ -67,7 +67,7 @@ import { useRoute, useRouter } from 'vue-router'
 const route = useRoute()
 const router = useRouter()
 
-const mobile = ref('13230000001')
+const mobile = ref('13230000010')
 const password = ref('abc12345')
 const code = ref('')
 const codeCheck = ref()

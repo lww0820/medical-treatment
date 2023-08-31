@@ -6,8 +6,8 @@
     </div>
     <div class="body">
       <!-- swipe 组件 -->
-      <van-swipe :width="150" :show-indicators="false" :loop="false">
-        <van-swipe-item v-for="(item, index) in list" :key="index">
+      <van-swipe :width="(150 / 375) * widthValue" :show-indicators="false" :loop="false">
+        <van-swipe-item v-for="(item, index) in doctorList" :key="index">
           <DoctorCard :item="item" />
         </van-swipe-item>
       </van-swipe>
@@ -20,14 +20,34 @@ import { getDoctorPage } from '@/services/consult'
 import DoctorCard from './DoctorCard.vue'
 import type { DoctorList } from '@/types/consult'
 import { ref } from 'vue'
-const list = ref<DoctorList>()
-const loadData = async () => {
-  const res = await getDoctorPage({ current: 1, pageSize: 5 })
-  console.log(res)
+import { onMounted } from 'vue'
+import { onUnmounted } from 'vue'
+const pageParams = ref({
+  current: 1,
+  pageSize: 5
+})
 
-  list.value = res.data.rows
+const doctorList = ref<DoctorList>()
+
+const initDoctorList = async () => {
+  const doctorRes = await getDoctorPage(pageParams.value)
+  doctorList.value = doctorRes.data.rows
 }
-loadData()
+initDoctorList()
+
+const widthValue = ref(0)
+
+const setWidth = () => (widthValue.value = window.innerWidth)
+
+onMounted(() => {
+  setWidth()
+  window.addEventListener('resize', setWidth)
+})
+
+onUnmounted(() => {
+  setWidth()
+  window.addEventListener('resize', setWidth)
+})
 </script>
 
 <style lang="scss" scoped>

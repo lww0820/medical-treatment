@@ -7,7 +7,7 @@
           <p class="name">{{ item.creatorName }}</p>
           <p class="dep van-ellipsis">{{ item.creatorDep }}</p>
         </div>
-        <van-button class="btn" size="small" round>{{
+        <van-button :loading="loading" @click="follow(item)" class="btn" size="small" round>{{
           item.likeFlag == 0 ? '已关注' : '+ 关注'
         }}</van-button>
       </div>
@@ -30,10 +30,11 @@
 
 <script lang="ts" setup>
 import type { Knowledge } from '@/types/consult'
-
+import useFollow from '@/composable/followDoctor'
 defineProps<{
   item: Knowledge
 }>()
+const { loading, follow } = useFollow('knowledge')
 </script>
 
 <style lang="scss" scoped>
