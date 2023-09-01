@@ -33,7 +33,7 @@ instance.interceptors.response.use(
   },
   (err) => {
     // token过期处理
-    if (err.response.status === 401) {
+    if (err.response && err.response.status === 401) {
       // 清除本地token和用户信息
       const store = useCounterStore()
       store.delUser()

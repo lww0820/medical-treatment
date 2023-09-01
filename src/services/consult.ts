@@ -4,7 +4,8 @@ import type {
   FollowType,
   KnowledgePage,
   KnowledgeParams,
-  PageParams
+  PageParams,
+  TopDep
 } from '@/types/consult'
 
 // /patient/home/knowledge
@@ -18,3 +19,5 @@ export const getDoctorPage = (params: PageParams) =>
 
 // 关注接口 '/like'
 export const like = (id: string, type: FollowType = 'doc') => request('/like', 'POST', { id, type })
+
+export const getAllDep = () => request<TopDep[]>('/dep/all', 'GET')
