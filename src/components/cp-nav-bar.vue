@@ -19,7 +19,6 @@ const onClickRight = () => {
 }
 
 const onClickLeft = () => {
-  // console.log(props.back)
   if (props.back) {
     return props.back()
   }

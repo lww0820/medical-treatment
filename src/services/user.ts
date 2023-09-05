@@ -17,3 +17,6 @@ export const loginByCode = (mobile: string, code: string) =>
 
 // 获取用户信息
 export const getUserInfo = () => request<userInfo>('/patient/myUser', 'GET')
+
+// 查询患者详情
+export const getPatientDetail = (id: string) => request<patientInfo>(`/patient/info/${id}`, 'GET')

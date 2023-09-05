@@ -1,8 +1,19 @@
 <template>
   <div class="patient-page">
-    <cpNavBar title="家庭档案"></cpNavBar>
+    <cpNavBar :title="isChange ? '选择患者' : '家庭档案'"></cpNavBar>
+    <!-- 头部提示 -->
+    <div class="patient-change" v-if="isChange">
+      <h3>请选择患者信息</h3>
+      <p>以便医生给出更准确的治疗，信息仅医生可见</p>
+    </div>
     <div class="patient-list">
-      <div class="patient-item" v-for="(item, index) in patientData" :key="index">
+      <div
+        class="patient-item"
+        @click="selectHandle(item)"
+        v-for="(item, index) in patientData"
+        :key="index"
+        :class="{ select: patientId === item.id }"
+      >
         <div class="info">
           <div class="top">
             <span class="name">{{ item.name }}</span>
@@ -65,6 +76,9 @@
           </van-action-bar>
         </template>
       </van-popup>
+      <div class="btn">
+        <van-button type="primary" round block @click="next">下一步</van-button>
+      </div>
     </div>
   </div>
 </template>
@@ -79,8 +93,15 @@ import { ref } from 'vue'
 import { computed } from 'vue'
 import { showConfirmDialog, showToast } from 'vant'
 import Validator from 'id-validator'
+// import router from '@/router'
+import { useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
+import { useConsultStore } from '@/stores/consult'
 
+const router = useRouter()
+const route = useRoute()
 const show = ref(false)
+const store = useConsultStore()
 
 // 初始化数据
 const initPatient: patientInfo = {
@@ -101,20 +122,24 @@ const options = [
   }
 ]
 
+const patientId = ref<string>()
 // 获取家庭档案
 
 const patientData = ref<patientInfo[]>()
 const getPatient = async () => {
   let res = await getPatientInfo()
-  // console.log(res.data)
   patientData.value = res.data
-  // console.log(patientData.value)
+  // 设置默认选中的ID，当你选择患者的时候，且有患者信息的时候
+  if (isChange.value && patientData.value.length) {
+    const defPatient = patientData.value.find((item) => item.defaultFlag === 1)
+    if (defPatient) patientId.value = defPatient.id
+    else patientId.value = patientData.value[0].id
+  }
 }
 getPatient()
 
 // 弹出弹框
 const showPopup = (item?: patientInfo) => {
-  // console.log(item)
   // 解构数据
   if (item) {
     const { id, name, idCard, defaultFlag, gender } = item
@@ -142,8 +167,6 @@ const onClickRight = async () => {
   if (!patient.value.idCard) return showToast('就诊人身份证号不能为空')
   const validate = new Validator()
   if (!validate.isValid(patient.value.idCard)) return showToast('身份证号不正确')
-  console.log(validate.getInfo(patient.value.idCard))
-  console.log(patient.value.gender)
 
   const { sex } = validate.getInfo(patient.value.idCard)
   if (patient.value.gender !== sex) return showToast('性别和身份证不一致')
@@ -152,14 +175,15 @@ const onClickRight = async () => {
   patient.value.id
     ? await EditPatientInfo({ ...patient.value })
     : await AddPatientInfo({ ...patient.value })
-  // console.log(add)
+
   showToast(patient.value.id ? '编辑成功' : '添加成功')
   getPatient()
   show.value = false
 }
 
+// 删除患者档案
 const del = async () => {
-  showConfirmDialog({
+  await showConfirmDialog({
     title: '温馨提示',
     message: '确定要删除吗？'
   })
@@ -167,6 +191,20 @@ const del = async () => {
   showToast('删除成功')
   getPatient()
   show.value = false
+}
+
+const isChange = computed(() => route.query.isChange)
+const selectHandle = (item: patientInfo) => {
+  // console.log(item)
+  if (isChange.value) {
+    patientId.value = item.id
+  }
+}
+
+const next = () => {
+  if (!patientId.value) return showToast('请选就诊择患者')
+  store.setPatient(patientId.value as string)
+  router.push('/consult/pay')
 }
 </script>
 
@@ -261,6 +299,39 @@ const del = async () => {
   .van-action-bar-button {
     background-color: var(--cp-bg);
     color: var(--cp-price);
+  }
+}
+
+.patient-change {
+  padding: 15px;
+  > h3 {
+    font-weight: normal;
+    margin-bottom: 5px;
+  }
+  > p {
+    color: var(--cp-text3);
+  }
+}
+
+.select {
+  border-color: var(--cp-primary);
+}
+.btn {
+  width: 100%;
+  padding: 15px;
+  box-sizing: border-box;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  .van-button {
+    background-color: var(--cp-primary);
+    border-color: var(--cp-primary);
+    &.disabled {
+      opacity: 1;
+      background: #fafafa;
+      color: #d9dbde;
+      border: #fafafa;
+    }
   }
 }
 </style>

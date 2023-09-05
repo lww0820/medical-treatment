@@ -1,5 +1,4 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import { useCounterStore } from '@/stores/user'
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
   routes: [
@@ -54,7 +53,7 @@ const router = createRouter({
     {
       path: '/consult/fast',
       name: 'fast',
-      component: () => import('../views/Home/consultFast.vue'),
+      component: () => import('../views/Home/ConsultFast.vue'),
       meta: { title: '极速问诊' }
     },
     {
@@ -64,10 +63,40 @@ const router = createRouter({
       meta: { title: '选择科室' }
     },
     {
+      path: '/consult/illness',
+      name: 'illness',
+      component: () => import('../views/Home/ConsultIllness.vue'),
+      meta: { title: '图文问诊' }
+    },
+    {
+      path: '/consult/pay',
+      name: 'pay',
+      component: () => import('../views/Home/consultPay.vue'),
+      meta: { title: '问诊支付' }
+    },
+    {
       path: '/user/consult',
       name: 'consult',
-      component: () => import('../views/User/Consult.vue'),
+      component: () => import('../views/User/ConsultPage.vue'),
       meta: { title: '问诊记录' }
+    },
+    {
+      path: '/user/consult/:id',
+      name: 'detail',
+      component: () => import('../views/User/ConsultDetail.vue'),
+      meta: { title: '问诊详情' }
+    },
+    {
+      path: '/room',
+      name: 'roonm',
+      component: () => import('../views/User/RoomPage.vue'),
+      meta: { title: '问诊室' }
+    },
+    {
+      path: '/order/pay',
+      name: 'orderpay',
+      component: () => import('../views/Order/OrderPay.vue'),
+      meta: { title: '问诊室' }
     }
   ]
 })

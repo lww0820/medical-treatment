@@ -1,4 +1,4 @@
-<template>问诊记录</template>
+<template>pay</template>
 
 <script lang="ts" setup>
 import { ref, reactive } from 'vue'

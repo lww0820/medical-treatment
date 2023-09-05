@@ -88,7 +88,7 @@ const tools = [
 ]
 const getUser = async () => {
   let userRes = await getUserInfo()
-  // console.log(userRes)
+
   user.value = userRes.data
 }
 getUser()
@@ -113,7 +113,6 @@ const logout = async () => {
 }
 
 const jump = (path: string) => {
-  // console.log(path)
   router.push(path)
 }
 </script>

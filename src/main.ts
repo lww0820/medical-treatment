@@ -9,8 +9,6 @@ import 'vant/lib/index.css'
 
 import 'virtual:svg-icons-register'
 
-console.log(history)
-
 app.use(pinia)
 app.use(router)
 app.mount('#app')

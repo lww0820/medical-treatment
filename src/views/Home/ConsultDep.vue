@@ -6,9 +6,13 @@
         <van-sidebar-item v-for="(item, index) in allDep" :key="index" :title="item.name" />
       </van-sidebar>
       <div class="sub-dep">
-        <router-link to="/consult/illness" v-for="item in subDep" :key="item.id">{{
-          item.name
-        }}</router-link>
+        <router-link
+          to="/consult/illness"
+          @click="store.setDep(item.id)"
+          v-for="item in subDep"
+          :key="item.id"
+          >{{ item.name }}</router-link
+        >
       </div>
     </div>
   </div>
@@ -19,6 +23,8 @@ import cpNavBar from '@/components/cp-nav-bar.vue'
 import { getAllDep } from '@/services/consult'
 import type { TopDep } from '@/types/consult'
 import { computed, onMounted, ref } from 'vue'
+import { useConsultStore } from '@/stores/consult'
+const store = useConsultStore()
 const active = ref(0)
 
 // ⼀级科室

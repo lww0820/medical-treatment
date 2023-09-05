@@ -18,13 +18,13 @@
 
 
   // 覆盖vant主体⾊
-  --van-primary-color: var(--cp-primary);
+  --van-primary-color: var(--cp-primary) !important;
   // 单元格上下间距
-  --van-cell-vertical-padding: 14px;
+  --van-cell-vertical-padding: 14px !important;
   // 复选框⼤⼩
-  --van-checkbox-size: 14px;
+  --van-checkbox-size: 14px !important;
   // 默认按钮⽂字⼤⼩
-  --van-button-normal-font-size: 16px;
+  --van-button-normal-font-size: 16px !important;
   }
   body {
     font-size: 14px;

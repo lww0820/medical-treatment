@@ -100,15 +100,13 @@ const login = async () => {
 
   try {
     useStore.setUser(LoginRes.data)
-    console.log(route.query)
+
     router.replace((route.query.returnUrl as string) || '/user')
     showToast('登录成功')
   } catch (error) {
     console.log(error)
   }
 }
-
-// console.log(LoginRes.data)
 
 // 发送验证码
 const sendCode = async () => {
@@ -120,7 +118,6 @@ const sendCode = async () => {
   let res = await sendCodeApi(mobile.value, 'login')
   showToast('发送成功')
 
-  // console.log(res)
   codeCheck.value = res.data.code
   timer.value = 60
 }
