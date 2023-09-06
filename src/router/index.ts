@@ -89,7 +89,7 @@ const router = createRouter({
     {
       path: '/room',
       name: 'roonm',
-      component: () => import('../views/User/RoomPage.vue'),
+      component: () => import('../views/Room/RoomPage.vue'),
       meta: { title: '问诊室' }
     },
     {
@@ -97,6 +97,11 @@ const router = createRouter({
       name: 'orderpay',
       component: () => import('../views/Order/OrderPay.vue'),
       meta: { title: '问诊室' }
+    },
+    {
+      path: '/order/pay/result',
+      component: () => import('@/views/Order/OrderPayResult.vue'),
+      meta: { title: '药品⽀付结果' }
     }
   ]
 })

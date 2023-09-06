@@ -36,6 +36,7 @@
     />
 
     <cpPaySheet
+      pay-callback="/room"
       v-model:show="show"
       :closea="closea"
       :actualPayment="payInfo.actualPayment"

@@ -99,6 +99,7 @@
     <van-skeleton title :row="4" />
   </div>
   <cpPaySheet
+    pay-callback="/room"
     v-model:show="show"
     :closea="closea"
     :actualPayment="detailInfo?.actualPayment!"

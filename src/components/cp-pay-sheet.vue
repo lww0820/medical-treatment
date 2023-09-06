@@ -44,6 +44,7 @@ const props = defineProps<{
   orderId: string
   actualPayment: number | string
   closea?: () => void
+  payCallback: string
 }>()
 
 const paymentMethod = ref<0 | 1>()
@@ -57,7 +58,7 @@ const pay = async () => {
   let res = await getConsultOrderPayUrl({
     orderId: props.orderId,
     paymentMethod: paymentMethod.value,
-    payCallback: 'http://localhost:5173/#/room'
+    payCallback: `http://localhost:5173/#` + props.payCallback
   })
   window.location.href = res.data.payUrl
 }
