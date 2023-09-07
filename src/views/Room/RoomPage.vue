@@ -2,7 +2,7 @@
   <div class="room-page">
     <cp-nav-bar title="医生问诊室"></cp-nav-bar>
     <room-status />
-    <van-button @click="$router.push('/order/pay?id=6938583829487616')">购买药品</van-button>
+    <van-button @click="$router.push('/order/pay?id=6938956218990592')">购买药品</van-button>
     <room-action />
   </div>
 </template>
